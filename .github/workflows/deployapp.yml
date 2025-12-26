@@ -41,5 +41,5 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: 22
           script: |
-            docker service update --image ${{ secrets.DOCKER_USERNAME }}/myapp:latest myapp_service || \
-            docker service create --name myapp_service --replicas 2 ${{ secrets.DOCKER_USERNAME }}/myapp:latest
+            docker service update --image ${{ secrets.DOCKER_USERNAME }}/mybitcoin-app:latest mybitcoin-app_service || \
+            docker service create --name mybitcoin-app_service  --replicas 2 ${{ secrets.DOCKER_USERNAME }}/mybitcoin-app:latest
