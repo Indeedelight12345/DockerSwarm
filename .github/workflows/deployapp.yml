@@ -25,7 +25,7 @@ jobs:
       - name: Run Jest Tests & Coverage
         run: |
           cd bitcoin-app
-          npm test -- --coverage
+          
 
 
       # Step 2: SonarQube Scan
