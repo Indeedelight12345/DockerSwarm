@@ -23,15 +23,18 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Build Docker image
+        working-directory: ./bitcoin-app
         run: |
           docker build -t mybitcoin-app:latest .
 
       - name: Push Docker image
+        working-directory: ./bitcoin-app
         run: |
           docker tag mybitcoin-app:latest ${{ secrets.DOCKER_USERNAME }}/mybitcoin-app:latest
           docker push ${{ secrets.DOCKER_USERNAME }}/mybitcoin-app:latest
 
       - name: Deploy to Docker Swarm via SSH
+        working-directory: ./bitcoin-app
         uses: appleboy/ssh-action@v0.1.7
         with:
           host: ${{ secrets.SSH_HOST }}
