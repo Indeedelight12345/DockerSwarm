@@ -34,7 +34,6 @@ jobs:
           docker push ${{ secrets.DOCKER_USERNAME }}/mybitcoin-app:latest
 
       - name: Deploy to Docker Swarm via SSH
-        working-directory: ./bitcoin-app
         uses: appleboy/ssh-action@v0.1.7
         with:
           host: ${{ secrets.SSH_HOST }}
