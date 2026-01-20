@@ -75,6 +75,11 @@ terraform apply -auto-approve
 ![terraform output](https://github.com/Indeedelight12345/DockerSwarm/blob/main/pictures/Screenshot%202025-12-26%20at%2016.10.13.png)
 
 
+### install docker on vm 
+![onfirm docker is running on vm ](https://github.com/Indeedelight12345/DockerSwarm/blob/main/pictures/Screenshot%202025-12-26%20at%2016.49.50.png)
+
+
+
 ### Initialize Docker Swarm Cluster
 * SSH to manager node: ssh -i key.pem ubuntu@manager-ip
 * Initialize: docker swarm init --advertise-addr <manager-public-ip>→ Outputs join token.
