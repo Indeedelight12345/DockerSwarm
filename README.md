@@ -13,3 +13,58 @@ Key components:
 Architecture Diagram
 The high-level architecture includes AWS EC2 instances managed by Terraform, forming a Docker Swarm cluster, with GitHub Actions handling build → test → deploy.
 ![Architecture Diagram](https://miro.medium.com/v2/resize:fit:1400/1*lO1VLK0GX955GTP4gHxr4g.gif)
+
+
+### Technologies & Tools Used
+* Cloud Provider: AWS (EC2)
+* IaC: Terraform (to create VPC, security groups, EC2 instances, etc.)
+* Containerization: Docker
+* Orchestration: Docker Swarm
+* CI/CD: GitHub Actions
+* Deployment Method: SSH from GitHub Actions → Manager node → docker stack deploy or docker service create/update
+* Git (version control)
+
+### Step-by-Step Implementation
+1. Infrastructure Provisioning with Terraform
+* Wrote Terraform configuration files (.tf) to:
+* Create a VPC (or use default)
+* Define security groups (allow SSH port 22, and Swarm ports: 2377/tcp, 7946/tcp+udp, 4789/udp)
+* Launch two EC2 instances (e.g., t2.micro or t3.micro, Amazon Linux 2 or Ubuntu)
+* Assign public IPs / Elastic IPs if needed
+* Use user_data script or provisioners to install Docker on both instances
+
+```
+provider "aws" {
+  region = "us-east-1"
+}
+
+resource "aws_security_group" "swarm_sg" {
+  name        = "docker-swarm-sg"
+  ingress {
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+  ingress {
+    from_port   = 2377
+    to_port     = 2377
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]  # Restrict in production!
+  }
+  # ... add other Swarm ports
+  egress { ... }
+}
+
+resource "aws_instance" "manager" {
+  ami           = "ami-0abcdef1234567890"  # Ubuntu
+  instance_type = "t3.micro"
+  key_name      = "my-key"
+  user_data     = file("install-docker.sh")
+  vpc_security_group_ids = [aws_security_group.swarm_sg.id]
+  # tags, etc.
+}
+```
+
+
+Example high-level Terraform flow (simplified):
