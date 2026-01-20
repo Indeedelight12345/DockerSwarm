@@ -66,5 +66,21 @@ resource "aws_instance" "manager" {
 }
 ```
 
+*  Run the terraform command
+```
+ terraform init
+terraform plan
+terraform apply -auto-approve
+```
 
-Example high-level Terraform flow (simplified):
+
+### Initialize Docker Swarm Cluster
+* SSH to manager node: ssh -i key.pem ubuntu@manager-ip
+* Initialize: docker swarm init --advertise-addr <manager-public-ip>→ Outputs join token.
+* Copy join command.
+* SSH to worker → run join
+```
+docker swarm join --token SWMTKN-1-abc...xyz <manager-ip>:2377
+docker node ls
+docker  service  ls
+```
