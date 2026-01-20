@@ -12,3 +12,4 @@ Key components:
 
 Architecture Diagram
 The high-level architecture includes AWS EC2 instances managed by Terraform, forming a Docker Swarm cluster, with GitHub Actions handling build → test → deploy.
+![Architecture Diagram](https://miro.medium.com/v2/resize:fit:1400/1*lO1VLK0GX955GTP4gHxr4g.gif)
