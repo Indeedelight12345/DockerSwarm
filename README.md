@@ -84,3 +84,67 @@ docker swarm join --token SWMTKN-1-abc...xyz <manager-ip>:2377
 docker node ls
 docker  service  ls
 ```
+
+### Prepare Application & Docker Image
+* Write Dockerfile.
+* build  the docker image
+*  test the  docker image locally 
+```
+services:
+  app:
+    image: yourusername/myapp:${TAG:-latest}
+    context: /bitcoin-app/ Dockerfile
+      replicas: 2
+      restart_policy:
+        condition: on-failure
+    ports:
+      - "80:80"
+```
+
+### CI/CD Pipeline with GitHub Actions
+* create a gitaction workflow  file
+* create  docker secrets on  gitaction workflow secret
+* create the managed node  ip address to connect to the managed node
+* copy the ssh  of the managed node to connect  the managed node
+* create the  username of the managed node 
+```
+name: Build & Deploy to Swarm
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build & Push Image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: true
+          tags: yourusername/myapp:latest
+
+      - name: Deploy to Swarm via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.MANAGER_IP }}
+          username: ubuntu
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            docker service update --image yourusername/myapp:latest myapp_app || \
+            docker stack deploy -c stack.yml myapp
+```
+![connecting  managed node](https://res.cloudinary.com/dthpnue1d/image/upload/v1718018425/image_2_9b35d23de2.png)
+      
