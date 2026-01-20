@@ -90,6 +90,7 @@ docker swarm join --token SWMTKN-1-abc...xyz <manager-ip>:2377
 docker node ls
 docker  service  ls
 ```
+![ docker  swarm init](https://github.com/Indeedelight12345/DockerSwarm/blob/main/pictures/Screenshot%202025-12-26%20at%2016.50.39.png)
 
 ### Prepare Application & Docker Image
 * Write Dockerfile.
