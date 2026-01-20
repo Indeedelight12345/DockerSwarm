@@ -72,6 +72,7 @@ resource "aws_instance" "manager" {
 terraform plan
 terraform apply -auto-approve
 ```
+![terraform output](https://github.com/Indeedelight12345/DockerSwarm/blob/main/pictures/Screenshot%202025-12-26%20at%2016.10.13.png)
 
 
 ### Initialize Docker Swarm Cluster
